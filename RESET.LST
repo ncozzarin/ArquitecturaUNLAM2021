@@ -1,0 +1,28 @@
+  ADDR B1 B2 B3 B4 C:\Users\Ten\Desktop\Informatica 2021\           PAGE       1
+
+                   ROM             EQU     $C000
+                   RAM             EQU     $0000
+                   RESET           EQU     $FFFE
+
+                                   ORG     RAM
+                   CONTADOR        RMB     1
+
+                                   ORG     ROM
+  C000 7F 00 00                    CLR     CONTADOR
+  C003 01                          NOP
+  C004 01                          NOP
+  C005 01                          NOP
+                   MAIN
+  C006 7C 00 00                    INC     CONTADOR
+  C009 20 FB                       BRA     MAIN
+
+                                   ORG     RESET
+  FFFE C0 00                       DW      ROM
+
+  Symbol Table 
+
+  RAM                0000
+  MAIN               C006
+  RESET              FFFE
+  CONTADOR           0000
+  ROM                C000
