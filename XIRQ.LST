@@ -1,0 +1,58 @@
+  ADDR B1 B2 B3 B4 C:\Users\Ten\Desktop\Informatica 2021\           PAGE       1
+
+                   IRQ             EQU     $FFF2
+                   XIRQ            EQU     $FFF4
+                   ROM             EQU     $C000
+                   RAM             EQU     $0000
+                   RESET           EQU     $FFFE
+                   CONFIG          EQU     $1039
+
+                   MASKNMI         EQU     %10111111
+                   MASKIRQ         EQU     %11101111
+                   MASKEDGE        EQU     %00100000
+
+
+                                   ORG     ROM
+                                   ;;Cargo el CCR en A
+  C000 07                          TPA
+  C001 84 AF                       ANDA    #(MASKNMI&MASKIRQ)
+  C003 06                          TAP
+                                   ;; IRQ por flanco
+  C004 B6 10 39                    LDAA    CONFIG
+  C007 8A 20                       ORAA    #MASKEDGE
+  C009 B7 10 39                    STAA    CONFIG
+
+
+  C00C 20 FE       FIN             BRA     FIN
+
+                   IRQ_ISR
+  C00E 01                          NOP
+  C00F 01                          NOP
+  C010 3B                          RTI
+                   NMI_ISR
+  C011 01                          NOP
+  C012 01                          NOP
+  C013 3B                          RTI
+
+                                   ORG     IRQ
+  FFF2 C0 0E                       DW      IRQ_ISR
+                                   ORG     XIRQ
+  FFF4 C0 11                       DW      NMI_ISR
+                                   ORG     RESET
+  FFFE C0 00                       DW      ROM
+
+
+  Symbol Table 
+
+  CONFIG             1039
+  RAM                0000
+  IRQ                FFF2
+  XIRQ               FFF4
+  MASKEDGE           0020
+  NMI_ISR            C011
+  MASKIRQ            00EF
+  RESET              FFFE
+  FIN                C00C
+  MASKNMI            00BF
+  ROM                C000
+  IRQ_ISR            C00E

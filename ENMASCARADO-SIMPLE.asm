@@ -2,18 +2,19 @@
 variable 	RMB
 
 MASK		EQU	%11110111
-
+MASK2		EQU	%10111111
 	
 		ORG	$C000
 
 INICIO		
 		LDAA	#$FF
 		STAA	VARIABLE
-
-
-
-
-
+		
+		LDAA	VARIABLE
+		ANDA	#MASK
+		STAA	VARIABLE
+		
+		
 
 
 
