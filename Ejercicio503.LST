@@ -1,0 +1,15 @@
+  ADDR B1 B2 B3 B4 thrass11.tmp                                     PAGE       1
+
+  C000 4F          INICIO          CLRA
+  C001 D6 F5                       LDAB            $F5
+  C003 9B F7       Otro            ADDA            $F7
+  C005 5A                          DECB
+  C006 26 FB                       BNE             Otro
+  C008 97 F8                       STAA            $F8
+  C00A 20 FE       fin             BRA             FIn
+
+  Symbol Table 
+
+  OTRO               C003
+  FIN                C00A
+  INICIO             C000
