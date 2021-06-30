@@ -1,0 +1,25 @@
+  ADDR B1 B2 B3 B4 C:\Users\Ten\Desktop\Informatica 2021\           PAGE       1
+
+                   ETIQUETA        EQU     $F7
+                   SUBRUTINA       EQU     3000
+
+                           ORG     $3000
+  3000 4F                  CLRA
+  3001 C6 00               LDAB    #$00
+  3003 E7 00               STAB    $00,X
+  3005 08                  INX
+  3006 5A                  DECB
+  3007 4A                  DECA
+  3008 81 00               CMPA    #$00
+                           BNE     etiqueta
+E                                  ^ The offset must fit in 8 bits.
+  300A 39                  RTS
+
+                           ORG     $4000
+  4000 9D FE               JSR     $FE
+
+
+  Symbol Table 
+
+  ETIQUETA           00F7
+  SUBRUTINA          0BB8

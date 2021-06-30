@@ -1,15 +1,18 @@
-  ADDR B1 B2 B3 B4 thrass11.tmp                                     PAGE       1
+  ADDR B1 B2 B3 B4 C:\Users\Ten\Desktop\Informatica 2021\           PAGE       1
 
-  C000 4F          INICIO          CLRA
-  C001 D6 F5                       LDAB            $F5
-  C003 9B F7       Otro            ADDA            $F7
-  C005 5A                          DECB
-  C006 26 FB                       BNE             Otro
-  C008 97 F8                       STAA            $F8
-  C00A 20 FE       fin             BRA             FIn
+                                   ORG             3000
+  0BB8 4F          INICIO          CLRA
+  0BB9 D6 F5                       LDAB            $F5
+  0BBB 9B F7       Otro            ADDA            $F7
+  0BBD 5A                          DECB
+  0BBE 26 FB                       BNE             Otro
+  0BC0 97 F8                       STAA            $F8
+  0BC2 20 FE       fin             BRA             FIn
+
+                   ;F5 * F7 = F8
 
   Symbol Table 
 
-  OTRO               C003
-  FIN                C00A
-  INICIO             C000
+  OTRO               0BBB
+  FIN                0BC2
+  INICIO             0BB8
