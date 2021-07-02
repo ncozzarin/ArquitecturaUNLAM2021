@@ -1,0 +1,36 @@
+  ADDR B1 B2 B3 B4 C:\Users\Ten\Desktop\Informatica 2021\           PAGE       1
+
+                                   ORG     $0011
+                   p               RMB     1
+                   q               RMB     1
+                   s               RMB     2
+
+                   ;; s = p + q - r
+                   ;; s = 11 + 12 - 13 = 10
+
+                                   ORG     $C000
+  C000 4F                          CLRA
+  C001 5F                          CLRB
+  C002 86 11                       LDAA    #p
+  C004 C6 12                       LDAB    #q
+  C006 1B                          ABA
+  C007 C6 13                       LDAB    #s
+  C009 10                          SBA
+  C00A 97 13                       STAA    s
+
+
+
+
+
+
+
+
+
+
+
+
+  Symbol Table 
+
+  P                  0011
+  Q                  0012
+  S                  0013
