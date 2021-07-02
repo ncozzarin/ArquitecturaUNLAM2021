@@ -1,0 +1,33 @@
+  ADDR B1 B2 B3 B4 C:\Users\Ten\Desktop\Informatica 2021\           PAGE       1
+
+                   RWM     EQU     $0000
+                   ROM     EQU     $C000
+
+                           ORG     RWM
+                   PosN1   RMB     2
+                   PosNN   RMB     2
+                   S       RMB     1
+
+                           ORG     ROM
+  C000 4F                  CLRA
+  C001 5F                  CLRB
+  C002 D6 02       LOOP    LDAB    PosNN
+  C004 96 04               LDAA    S
+  C006 1B                  ABA
+  C007 97 04               STAA    S
+  C009 7A 00 02            DEC     PosNN
+  C00C CC 00 02            LDD     #PosNN
+  C00F 1A 83 00 00         CPD     #PosN1
+  C013 24 ED               BHS     LOOP
+  C015 20 FE       FIN     BRA     FIN
+
+
+  Symbol Table 
+
+  S                  0004
+  RWM                0000
+  POSN1              0000
+  FIN                C015
+  POSNN              0002
+  ROM                C000
+  LOOP               C002
