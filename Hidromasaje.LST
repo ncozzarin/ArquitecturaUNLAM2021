@@ -1,0 +1,86 @@
+  ADDR B1 B2 B3 B4 thrass11.tmp                                     PAGE       1
+
+                   ;Una baera con hidromasaje cuenta con un microcontrolador
+.                  Motorola HC11 para su operacin. El
+                   ;mismo tiene conectados dos sensores (INF y SUP) para
+.                  determinar si el nivel de agua de la baera est en
+                   ;el rango de operacin. El hidromasaje se debe encender
+.                  solamente si el nivel de agua est dentro del
+                   ;mismo, caso contrario debe apagarlo de inmediato y activar
+.                  una seal luminosa para notificar que el agua
+                   ;est por debajo del mnimo o por encima del mximo (la misma
+.                  seal luminosa notifica ambas
+                   ;condiciones). El llenado/vaciado del hidromasaje se realiza
+.                  en forma manual.
+                   ;El sensor INF est mapeado en $1000 y cuando el agua lo
+.                  alcanza su valor es $00. El sensor SUP est
+                   ;mapeado en $1001 y se comporta de la misma forma (si el agua
+.                  no los alcanza su valor es distinto de cero).
+                   ;La bomba del hidromasaje se activa cuando se escribe el
+.                  valor 01H en $1002 y se apaga cuando se pone en
+                   ;cero. La seal luminosa se activa si se escribe 01H en $1003
+.                  y se apaga si se escribe un cero en la misma
+                   ;direccin. Si la bomba est activada se leer un valor distinto
+.                  de cero en $1005.
+                   ;Se solicita que codifique una rutina en assembler para
+.                  controlar el funcionamiento del hidromasaje. Tenga
+                   ;en cuenta que la bomba no debe recibir las mismas seales de
+.                  encendido o apagado repetidamente.
+
+                                   ORG     $C000
+                   INF             EQU     $0000
+                   SUP             EQU     $0001
+                   ACTIVADOR       EQU     $0002
+                   ALERTA          EQU     $0003
+                   ESTADOBOMBA     EQU     $0005
+
+                   INICIO
+                                   ; inferior $01 -> POCA AGUA
+                                   ; superior $00 -> MUCHA AGUA
+
+                                   ; $00 && $01 -> AGUA EN RANGO
+                                   ;CHEKEO SI EL SENSOR SUPERIOR ESTA EN 00 Y SI
+.                  LO ESTA SALTO
+  C000 D6 01                       LDAB    SUP
+  C002 C1 00                       CMPB    #$00
+  C004 27 18                       BEQ     MAL
+                                   ;CHEKEO SI EL INFERIOR ESTA EN 01 Y SI LO
+.                  ESTA SALTTO A ETIQUETA
+  C006 96 00                       LDAA    INF
+  C008 81 01                       CMPA    #$01
+  C00A 27 12                       BEQ     MAL
+
+  C00C 96 05                       LDAA    ESTADOBOMBA
+  C00E 81 01                       CMPA    #$01
+  C010 27 EE                       BEQ     INICIO
+  C012 86 01                       LDAA    #$01
+  C014 97 02                       STAA    ACTIVADOR
+  C016 97 05                       STAA    ESTADOBOMBA
+  C018 86 00                       LDAA    #$00
+  C01A 97 03                       STAA    ALERTA
+  C01C 20 E2                       BRA     INICIO
+
+                   MAL
+  C01E 86 01                       LDAA    #$01
+  C020 97 03                       STAA    ALERTA
+  C022 96 05                       LDAA    ESTADOBOMBA
+  C024 81 00                       CMPA    #$00
+  ADDR B1 B2 B3 B4 thrass11.tmp                                     PAGE       2
+
+  C026 27 D8                       BEQ     INICIO
+  C028 86 00                       LDAA    #$00
+  C02A 97 02                       STAA    ACTIVADOR
+  C02C 97 05                       STAA    ESTADOBOMBA
+  C02E 86 01                       LDAA    #$01
+  C030 97 03                       STAA    ALERTA
+  C032 20 CC                       BRA     INICIO
+
+  Symbol Table 
+
+  ACTIVADOR          0002
+  ALERTA             0003
+  MAL                C01E
+  SUP                0001
+  ESTADOBOMBA        0005
+  INF                0000
+  INICIO             C000

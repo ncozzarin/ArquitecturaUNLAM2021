@@ -1,0 +1,105 @@
+  ADDR B1 B2 B3 B4 thrass11.tmp                                     PAGE       1
+
+                                   ORG     $00FF
+                   DISPOSITIVO     EQU     $0080
+                   BOTONES         EQU     $1003
+                   RESULL          EQU     $0000 ; LA 'E' EN ASCII ES 69 ($45)
+                   MASK0           EQU     %00000001
+                   MASK1           EQU     %00000010
+                   MASK2           EQU     %00000100
+                   MASK3           EQU     %00001000
+                   MASK4           EQU     %00010000
+                   MASK5           EQU     %00100000
+                   MASK6           EQU     %01000000
+                   MASK7           EQU     %10000000
+
+
+
+                                   ORG     $C000
+                   INICIO
+  C000 86 FF                       LDAA    #%11111111
+  C002 97 80                       STAA    DISPOSITIVO
+  C004 B6 10 03                    LDAA    BOTONES
+  C007 43                          COMA
+  C008 97 80                       STAA    DISPOSITIVO
+  C00A 13 80 01 1C                 BRCLR   DISPOSITIVO     MASK0   CERO
+  C00E 13 80 02 22                 BRCLR   DISPOSITIVO     MASK1   UNO
+  C012 13 80 04 24                 BRCLR   DISPOSITIVO     MASK2   DOS
+  C016 13 80 08 26                 BRCLR   DISPOSITIVO     MASK3   TRES
+  C01A 13 80 10 28                 BRCLR   DISPOSITIVO     MASK4   CUATRO
+  C01E 13 80 20 2A                 BRCLR   DISPOSITIVO     MASK5   CINCO
+  C022 13 80 40 2C                 BRCLR   DISPOSITIVO     MASK6   SEIS
+  C026 13 80 80 2E                 BRCLR   DISPOSITIVO     MASK7   SIETE
+
+
+                   CERO
+  C02A 13 01 80 30                 BRCLR   MASK0 DISPOSITIVO ERROR ; 00000001 *
+.                  01111110 = 1
+  C02E 86 30                       LDAA    #48
+  C030 97 00                       STAA    RESULL
+  C032 20 CC                       BRA     INICIO
+
+                   UNO
+
+  C034 86 31                       LDAA    #49
+  C036 97 00                       STAA    RESULL
+  C038 20 C6                       BRA     INICIO
+                   DOS
+
+  C03A 86 32                       LDAA    #50
+  C03C 97 00                       STAA    RESULL
+  C03E 20 C0                       BRA     INICIO
+                   TRES
+
+  C040 86 33                       LDAA    #51
+  C042 97 00                       STAA    RESULL
+  C044 20 BA                       BRA     INICIO
+                   CUATRO
+
+  C046 86 34                       LDAA    #52
+  C048 97 00                       STAA    RESULL
+  C04A 20 B4                       BRA     INICIO
+                   CINCO
+
+  C04C 86 35                       LDAA    #53
+  C04E 97 00                       STAA    RESULL
+  C050 20 AE                       BRA     INICIO
+                   SEIS
+  ADDR B1 B2 B3 B4 thrass11.tmp                                     PAGE       2
+
+  C052 86 36                       LDAA    #54
+  C054 97 00                       STAA    RESULL
+  C056 20 A8                       BRA     INICIO
+                   SIETE
+  C058 86 37                       LDAA    #55
+  C05A 97 00                       STAA    RESULL
+  C05C 20 A2                       BRA     INICIO
+                   ERROR
+  C05E 86 45                       LDAA    #$45
+  C060 97 00                       STAA    RESULL
+  C062 20 9C                       BRA     INICIO
+
+
+  Symbol Table 
+
+  TRES               C040
+  ERROR              C05E
+  RESULL             0000
+  SIETE              C058
+  MASK0              0001
+  MASK1              0002
+  MASK2              0004
+  MASK3              0008
+  MASK4              0010
+  MASK5              0020
+  MASK6              0040
+  MASK7              0080
+  DISPOSITIVO        0080
+  CINCO              C04C
+  DOS                C03A
+  SEIS               C052
+  CUATRO             C046
+  UNO                C034
+  CERO               C02A
+  INICIO             C000
+  BOTONES            1003
