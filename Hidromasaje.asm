@@ -11,7 +11,6 @@
 ;dirección. Si la bomba está activada se leerá un valor distinto de cero en $1005.
 ;Se solicita que codifique una rutina en assembler para controlar el funcionamiento del hidromasaje. Tenga
 ;en cuenta que la bomba no debe recibir las mismas señales de encendido o apagado repetidamente.
-
 		ORG	$C000
 INF		EQU	$0000
 SUP		EQU	$0001
