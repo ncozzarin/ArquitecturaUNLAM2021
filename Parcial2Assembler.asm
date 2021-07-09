@@ -1,0 +1,26 @@
+		ORG	$C000
+AUX		RMB		10
+
+CONTCANT
+		CLR			AUX+4
+		LDD			0,Y
+		STD			AUX
+LOOP		LDD			0,X
+		CPD			#0
+		BEQ			FINAL
+		INX
+		CPD			AUX
+		BGE			SUMAR
+		BRA			LOOP		
+
+SUMAR	
+		LDAA			#1
+		ADDA			AUX+4
+		BRA			LOOP	
+
+
+
+FINAL
+		LDAA			AUX+4
+		STAA			0,X
+		RTS
