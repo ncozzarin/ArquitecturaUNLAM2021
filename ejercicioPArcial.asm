@@ -1,0 +1,96 @@
+	ORG	$0000
+AUX	RMB	10
+
+ATOIU16BE
+	
+	CLR	AUX
+	CLR	AUX+1
+	CLR	AUX+2	
+	CLRA
+	CLRB
+	;Primero cargo en la parte baja de D los bits del ASCII
+	LDAB	0,X
+	;Le resto el 0 en ASCII para convertirlo en entero
+	DECB	#48
+	;En el registro b tenemos el caracter en entero
+	;Lo multiplico por su peso
+	CMPB	#0
+	BEQ	SEGUNDO
+	; GUARDO EN AUX EL B QUE SERA MI ITERADOR EL CUAL MULTIPLICARE POR EL PESO DE SU POSICION
+
+PRIMERO	STAB	AUX 	
+	;SI EL PRIMER CARACTER NO ES CERO LE SUMO SU PESO int(b) VECES
+	LDD	AUX+1
+	ADDD	#10000
+	;acumulo en aux+1 y aux+2 el entero pesado de 16 bits
+	STD	AUX+1
+	LDAB	AUX
+	DECB	
+	BGE	PRIMERO  			
+	
+SEGUNDO
+
+	;Hago el mismo procedimiento con el segundo caracter, corriegiendo el 
+	;peso a 1000
+	LDAB	1,X
+	DECB	#48
+	CMPB	#0
+	BEQ	TERCERO
+LOOP1	STAB	AUX
+	LDD	AUX+1
+	ADDD	#1000
+	STD	AUX+1
+	LDAB	AUX
+	DECB
+	BGE	LOOP1
+	
+TERCERO
+			
+	;Hago el procedimiento anterior con el peso 100
+	LDAB	2,X
+	DECB	#48
+	CMPB	#0
+	BEQ	CUARTO
+LOOP2	STAB	AUX
+	LDD	AUX+1
+	ADDD	#100
+	STD	AUX+1
+	LDAB	AUX
+	DECB	
+	BGE	LOOP2
+
+CUARTO
+	;Hago el procedimiento anterior con peso 10
+	LDAB	3,X
+	DECB	#48
+	CMPB	#0
+	BEQ	QUINTO
+LOOP3	STAB	AUX
+	LDD	AUX+1
+	ADDD	#10
+	STD	AUX+1
+	LDAB	AUX
+	DECB
+	BGE	LOOP3
+
+QUINTO
+	;Hago el mismo procedimiento con peso 1
+	LDAB	4,X
+	DECB	#48
+	CMPB	#0
+	BEQ	FINAL
+LOOP4	STAB	AUX
+	LDD	AUX+1
+	ADDD	#1
+	STD	AUX+1
+	LDAB	AUX
+	DECB
+	BGE	LOOP4
+	;CARGO EN D EL NUMERO DE 16 BITS Y LO GUARDO EN MEMORIA
+	;AL SER BIG ENDIAN UTILIZO LA INSTRUCCION STD YA QUE CARGA
+	;EL BYTE MAS SIGNIFICATIBO A->M Y EL MENOS SIGNIFICATIVO B->M+1
+	LDD	AUX+1
+	STD	0,Y
+	RTS
+
+		
